@@ -9,7 +9,7 @@ module ActionCsv
   def self.export_csv model_name
     singularized_name = model_name.singularize.underscore
     file_dir = "./db/csv"
-    FileUtiles.mkdir_p file_dir unless Dir.exist? file_dir
+    FileUtils.mkdir_p file_dir unless Dir.exist? file_dir
     file_path = ENV["RACK_ENV"] == "production" ? "#{file_dir}#{model_name.pluralize.underscore}_production.csv" : "#{file_dir}#{model_name.pluralize.underscore}.csv"
     CSV.open(file_path, "w") do |csv|
       if COLUMNS[singularized_name].present?
@@ -26,5 +26,17 @@ module ActionCsv
     true
   rescue StandardError => error
     error.backtrace
+  end
+
+  def self.get_tables
+    path = "./db/schema.rb"
+    tables = []
+    File.open(path, "r") do |f|
+      f.each_line.with_index do |line, i|
+        tables << line.split("\"")[1] if line.include?("create_table")
+      end
+    end
+    puts tables
+    tables
   end
 end
