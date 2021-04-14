@@ -2,13 +2,14 @@
 
 require_relative "action_csv/version"
 require "yaml"
+require "csv"
 
 module ActionCsv
   class Error < StandardError; end
   COLUMNS = YAML.safe_load_file "./config/column_names.yml"
   def self.export_csv model_name
     singularized_name = model_name.singularize.underscore
-    file_dir = "./db/csv"
+    file_dir = "./db/csv/"
     FileUtils.mkdir_p file_dir unless Dir.exist? file_dir
     file_path = ENV["RACK_ENV"] == "production" ? "#{file_dir}#{model_name.pluralize.underscore}_production.csv" : "#{file_dir}#{model_name.pluralize.underscore}.csv"
     CSV.open(file_path, "w") do |csv|
