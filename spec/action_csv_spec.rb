@@ -5,7 +5,13 @@ RSpec.describe ActionCsv do
     expect(ActionCsv::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "has config dir" do
+    a1 = Dir.exist? "config"
+    expect(a1).to eq(true)
+  end
+
+  it "has db dir" do
+    a1 = Dir.exist? "db"
+    expect(a1).to eq(true)
   end
 end
