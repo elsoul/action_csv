@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "action_csv/version"
+require "yaml"
 
 module ActionCsv
   class Error < StandardError; end
